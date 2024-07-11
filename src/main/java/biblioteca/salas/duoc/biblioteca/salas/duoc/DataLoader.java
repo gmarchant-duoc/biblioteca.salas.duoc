@@ -79,7 +79,7 @@ public class DataLoader implements CommandLineRunner {
 
         // Generar reservas
         for (int i = 0; i < 20; i++) {
-            Reserva reserva = new Reserva();
+            Reserva reserva = new Reserva(1,  new Date(), new Date(), new Date(), 1, new Estudiante(), new Sala());
             reserva.setId(i + 1);
             reserva.setEstudiante(estudiantes.get(random.nextInt(estudiantes.size())));
             reserva.setSala(salas.get(random.nextInt(salas.size())));
