@@ -1,10 +1,9 @@
-package biblioteca.salas.duoc.biblioteca.salas.duoc;
+package biblioteca.salas.duoc.biblioteca.salas.duoc.service;
 
 import biblioteca.salas.duoc.biblioteca.salas.duoc.model.Estudiante;
 import biblioteca.salas.duoc.biblioteca.salas.duoc.model.Reserva;
 import biblioteca.salas.duoc.biblioteca.salas.duoc.model.Sala;
 import biblioteca.salas.duoc.biblioteca.salas.duoc.repository.ReservaRepository;
-import biblioteca.salas.duoc.biblioteca.salas.duoc.service.ReservaService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

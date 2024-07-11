@@ -1,11 +1,10 @@
-package biblioteca.salas.duoc.biblioteca.salas.duoc;
+package biblioteca.salas.duoc.biblioteca.salas.duoc.service;
 
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import biblioteca.salas.duoc.biblioteca.salas.duoc.model.Carrera;
 import biblioteca.salas.duoc.biblioteca.salas.duoc.repository.CarreraRepository;
-import biblioteca.salas.duoc.biblioteca.salas.duoc.service.CarreraService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

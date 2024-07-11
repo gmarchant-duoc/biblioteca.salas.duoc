@@ -2,6 +2,7 @@ package biblioteca.salas.duoc.biblioteca.salas.duoc.controller;
 
 import biblioteca.salas.duoc.biblioteca.salas.duoc.model.Sala;
 import biblioteca.salas.duoc.biblioteca.salas.duoc.service.SalaService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
