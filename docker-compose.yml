@@ -35,6 +35,15 @@ services:
       SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
 
+  eureka:
+    build:
+      context: ./eureka-server
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "8761:8761"
+    # no environment variables or healthcheck; rely on service start ordering
+
   gateway:
     build:
       context: ./gateway
@@ -43,6 +52,8 @@ services:
     env_file:
       - .env
     depends_on:
+      eureka:
+        condition: service_started
       app:
         condition: service_started
     ports:
@@ -50,6 +61,8 @@ services:
     environment:
       # The gateway routes point to the service name 'app' in this compose network
       GATEWAY_TARGET_APP: http://app:8080
+      # Eureka discovery URL for clients (gateway/app will use this once configured)
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka
 
 volumes:
   db_data:

@@ -1,13 +1,18 @@
 # Spring Cloud Gateway — instrucciones
 
 Resumen:
-- Módulo `gateway` en el repo: construye una pequeña Spring Boot app con Spring Cloud Gateway.
-- Expone puerto `8081` y enruta peticiones `GET/POST ...` que coincidan con `Path=/api/**` hacia la aplicación principal (`app`) en `http://app:8080`.
+- Módulo `gateway` en el repo: aplicación Spring Boot con Spring Cloud Gateway.
+- Expone puerto `8081` y actúa como punto de entrada central.
+- El `gateway` está configurado para usar descubrimiento de servicios (Eureka). Las rutas apuntan usando `lb://<service-name>` (p. ej. `lb://biblioteca.salas.duoc`) en lugar de URL estáticas.
+
+Requisitos:
+- El `eureka` debe estar disponible antes de arrancar el `gateway` para permitir registro y resolución de servicios.
 
 Construir y arrancar con Docker Compose:
 
 ```bash
-docker-compose up --build -d gateway app db
+# Levanta DB, Eureka, la app y el gateway
+docker-compose up --build -d
 ```
 
 Comprobar estado:
@@ -15,21 +20,32 @@ Comprobar estado:
 ```bash
 docker-compose ps
 docker-compose logs --tail 200 gateway
+docker-compose logs --tail 200 eureka
 ```
 
-Rutas expuestas por defecto:
-- `http://localhost:8081/api/...` → proxy hacia `http://localhost:8080/api/...` (la app dentro de Compose)
+Comportamiento de rutas:
+- Las rutas principales expuestas por el gateway siguen `/api/**` y `/doc/**`.
+- El Gateway resuelve servicios por nombre mediante Eureka. Ejemplo:
 
-Configuración importante:
-- El `gateway` usa `application-gateway.properties` en `gateway/src/main/resources`.
-- Variables desde `.env` cargadas por `docker-compose`.
+```yaml
+# ejemplo de route (interno en properties/yaml)
+# uri=lb://biblioteca.salas.duoc
+```
 
-Pruebas rápidas:
+Pruebas rápidas (desde host):
 
 ```bash
+# API proxificada
 curl http://localhost:8081/api/carreras
+
+# OpenAPI JSON a través del gateway
+curl http://localhost:8081/v3/api-docs
+
+# Swagger UI (redirige dentro del gateway)
+open http://localhost:8081/doc/swagger-ui.html
 ```
 
 Notas:
-- Para producción, añade circuit breakers, timeouts y autenticación en el gateway.
-- Si quieres que el gateway actúe como único punto de entrada (reemplazando el puerto 8080 expuesto), cambia los mapeos de puertos en `docker-compose.yml`.
+- Asegúrate de que `spring.application.name` en la app está configurado como `biblioteca.salas.duoc` para que Eureka registre el servicio con ese nombre.
+- CORS debe estar habilitado en la aplicación (o gestionado por el gateway) para que el Swagger UI pueda consumir las APIs desde el navegador.
+- Para producción considera agregar circuit breakers, timeouts, seguridad (auth) y límites de rate en el gateway.
