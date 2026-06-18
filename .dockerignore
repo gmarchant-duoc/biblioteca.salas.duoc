@@ -1,0 +1,10 @@
+target/
+.mvn/
+.git/
+.idea/
+.vscode/
+*.iml
+*.log
+Dockerfile
+docker-compose.override.yml
+README-docker.md
